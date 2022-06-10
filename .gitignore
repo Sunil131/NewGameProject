@@ -1,4 +1,4 @@
 .vscode/launch.json
 .vscode/tasks.json
-Play.Catalog\src\Play.Catalog.Service\bin
-Play.Catalog\src\Play.Catalog.Service\obj
+bin/
+obj/
