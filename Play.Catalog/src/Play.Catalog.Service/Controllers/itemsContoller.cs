@@ -22,8 +22,12 @@ namespace Play.Catalog.Service.Controllers
         //     new ItemDto(Guid.NewGuid(), "Bronze Sword", "Deal a small amount of Damage", 20, DateTimeOffset.UtcNow)
         // };
 
-        private readonly ItemsRepository itemRepo = new();
+        private readonly IItemsRepository itemRepo;
 
+        public ItemsContoller(IItemsRepository itemRepository)
+        {
+            this.itemRepo = itemRepository;
+        }
         [HttpGet]
         public async Task<IEnumerable<ItemDto>> GetAsync()
         {
