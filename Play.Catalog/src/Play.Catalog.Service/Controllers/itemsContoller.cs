@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Play.Catalog.Service.Dtos;
 using Play.Catalog.Service.Entities;
-using Play.Catalog.Service.Repositories;
+using Play.Common;
 
 namespace Play.Catalog.Service.Controllers
 {
@@ -22,9 +22,9 @@ namespace Play.Catalog.Service.Controllers
         //     new ItemDto(Guid.NewGuid(), "Bronze Sword", "Deal a small amount of Damage", 20, DateTimeOffset.UtcNow)
         // };
 
-        private readonly IItemsRepository itemRepo;
+        private readonly IRepository<Item> itemRepo;
 
-        public ItemsContoller(IItemsRepository itemRepository)
+        public ItemsContoller(IRepository<Item> itemRepository)
         {
             this.itemRepo = itemRepository;
         }
