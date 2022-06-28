@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Play.Common.MassTransit;
 using Play.Common.MongoDB;
 using Play.Inventory.Service.Client;
 using Play.Inventory.Service.Entities;
@@ -31,8 +32,21 @@ namespace Play.Inventory.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMongo()
-                    .AddMongoRepository<InventoryItem>("inventoryItems");
+                    .AddMongoRepository<InventoryItem>("inventoryItems")
+                    .AddMongoRepository<CatalogItem>("catalogitems")
+                    .AddMassTransitWithRabbitMq();
 
+            AddCatalogClient(services);
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Play.Inventory.Service", Version = "v1" });
+            });
+        }
+
+        private static void AddCatalogClient(IServiceCollection services)
+        {
             Random jiterer = new Random();
 
             services.AddHttpClient<CatalogClient>(client =>
@@ -67,14 +81,6 @@ namespace Play.Inventory.Service
                }
             ))
             .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1));
-
-
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Play.Inventory.Service", Version = "v1" });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

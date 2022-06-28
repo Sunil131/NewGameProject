@@ -4,21 +4,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+// using Microsoft.AspNetCore.HttpsPolicy;
+// using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+// using MongoDB.Bson;
+// using MongoDB.Bson.Serialization;
+// using MongoDB.Bson.Serialization.Serializers;
+// using Microsoft.Extensions.Options;
+// using MongoDB.Driver;
 using Play.Catalog.Service.Entities;
 using Play.Common.Settings;
 using Play.Common.MongoDB;
+using Play.Common.MassTransit;
+//using MassTransit;
+//using Play.Catalog.Service.Settings;
 
 namespace Play.Catalog.Service
 {
@@ -42,7 +45,9 @@ namespace Play.Catalog.Service
 
             serviceSettings = Configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
             services.AddMongo()
-                    .AddMongoRepository<Item>("items");
+                    .AddMongoRepository<Item>("items")
+                    .AddMassTransitWithRabbitMq();
+
 
             services.AddControllers(options =>
                 options.SuppressAsyncSuffixInActionNames = false
